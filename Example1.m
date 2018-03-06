@@ -32,9 +32,10 @@ for i = 1 : length(exps)
     Q(1,1) = -rho2;
     Q(end,end) = -rho1;
     
-    funm_markov(v', Q', pi0', 'exp', 1)
+    f = funm_markov(pi0, Q, v, 'exp', 1);
     tt = timeit(@() funm_markov(pi0, Q, v, 'exp', 1));
-    fprintf('N = %d, time = %e\n', n, tt);
+    
+    fprintf('N = %d, time = %e (f = %e)\n', n, tt, f);
     times(i) = tt;
 end
 
