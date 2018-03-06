@@ -23,16 +23,29 @@ for i = 1 : 5
 
     % And we are interested in how much time we stay in the first state
     v = zeros(n,1);
-    v(1:1) = 1;
+    v(1:2:end) = 1;
+    
+    % v = ones(n,1); v(1:2:end) = 0;
+    v = zeros(n,1); 
+    
+    % In this case it's easy to see that the reward will be this vector
+    % here.
+    v(4:2:end) = 1; v(end) = 1;
+    
+    % This can be used to compute the reward
+    %for j = 1 : n
+    %    if ~isempty(find(Q(j,:) == 0.1, 1))
+    %        v(j) = 1;
+    %    end
+    %end
 
     % The following line might be uncommented to check that we are
-    % computing the right thing -- as of now we are interested in taking
-    % the timings. 
-    % f = funm_markov(pi0, Q, v, 'phi', T); 
+    % computing the right thing -- as of now we are interested in taking the timings. 
+    f = funm_markov(pi0, Q, v, 'phi', T);
     
     % Take the times
     times(i) = timeit(@() funm_markov(pi0, Q, v, 'phi', T));
-    fprintf(' - N = %d, time: %e seconds\n', n, times(i));
+    fprintf(' - N = %d, time: %e seconds (f = %e)\n', n, times(i), f);
 end
 
 dlmwrite('example2.dat', [ Ns', times' ], '\t');

@@ -1,4 +1,4 @@
-function r = funm_markov(pi0, Q, v, f, t, varargin)
+function [r, ff] = funm_markov(pi0, Q, v, f, t, varargin)
 %FUNM_MARKOV Estimate the bilinear form pi0' * f(Q) * v. 
 %
 % R = FUNM_MARKOV(PI0, Q, V, F, T) estimates the bilinear form defined by the
@@ -51,12 +51,12 @@ param.truncation_length = inf;
 param.bound = false;
 
 if strcmp(f, 'exp') || strcmp(f, 'phi_pade')
-    A = t * Q - l * speye(size(Q, 1));
+    A = t * Q' - l * speye(size(Q, 1));
     r = v;
 end
 
 if strcmp(f, 'phi')
-    A = [ t*Q - l * speye(size(Q, 1)), v ; zeros(1, size(Q,2) + 1) ];
+    A = [ t*Q' - l * speye(size(Q, 1)), pi0' ; zeros(1, size(Q,2) + 1) ];
     r = [ zeros(size(Q,2),1) ; 1 ];
 end
 
@@ -68,15 +68,13 @@ ff = ff(1 : size(Q, 2));
 % Ensure positivity: no matter what, the vector ff is the product of a
 % positive matrix (expm(tQ)) with a positive vector, the ones containing
 % the rewards -- therefore we can enforce positivity of ff here. 
-if min(v) >= 0
-    ff = max(ff, 0);
-end
+ff = max(ff, 0);
 
 if strcmp(f, 'phi') || strcmp(f, 'phi_pade')
     ff = t * ff;
 end
 
-r = pi0 * ff * exp(l);
+r = v' * ff * exp(l);
 
 
 end

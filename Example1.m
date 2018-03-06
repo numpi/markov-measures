@@ -25,13 +25,14 @@ for i = 1 : length(exps)
     v = 0 : (n-1);
     v = v';
 
-    rho1 = 0.6; 
-    rho2 = 0.4;
+    rho1 = 0.4; 
+    rho2 = 0.6;
     
     Q = spdiags(ones(n,1) * [ rho1, -rho1-rho2, rho2 ], -1:1, n, n);
     Q(1,1) = -rho2;
     Q(end,end) = -rho1;
     
+    funm_markov(pi0, Q, v, 'exp', 1)
     tt = timeit(@() funm_markov(pi0, Q, v, 'exp', 1));
     fprintf('N = %d, time = %e\n', n, tt);
     times(i) = tt;
