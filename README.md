@@ -4,4 +4,4 @@ This repository contains the code required to replicate the numerical experiment
 contained in the paper "Performability measures are matrix function: how to compute
 them efficiently". 
 
-The toolbox funm_quad, required to run these examples, can be retrieved [here](guettel.com/funm_quad/)
+The toolbox funm_quad, required to run these examples, can be retrieved [here](http://guettel.com/funm_quad/)
