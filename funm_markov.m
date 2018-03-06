@@ -52,7 +52,7 @@ param.bound = false;
 
 if strcmp(f, 'exp') || strcmp(f, 'phi_pade')
     A = t * Q' - l * speye(size(Q, 1));
-    r = v;
+    r = pi0';
 end
 
 if strcmp(f, 'phi')
