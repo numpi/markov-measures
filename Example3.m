@@ -1,17 +1,25 @@
-function Example3(Q)
+function Example3
 %EXAMPLE3 Compute ???
 %   Detailed explanation goes here
 
 % Use the following to load Q
-% Q = loadArm('example3/Example3/Transformer/SS/Experiment_10.arm');
+Q = loadArm2('data/example3/Experiment_80.arm');
+
 pi0 = [ 1 , zeros(1, size(Q,2)-1) ];
 r = double(full(sum(abs(Q')) == 0)');
 
-T = 10;
+% [pi0, Q, r] = deflate_zero_eigs(pi0, Q, r);
 
-tic; ee = funm_markov(pi0, Q, r, 'exp', T); toc
-ee
+T = 40;
 
+n = size(Q, 2);
+
+tic; 
+ee = funm_markov(pi0, Q, r, 'phi', T, 'alg', 'higham');
+toc
+
+% NG = 95, T = 30, 3.090795e-4
+% NG = 95, T = 25, 5.257271e-7
 
 end
 

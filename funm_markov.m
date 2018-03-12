@@ -20,48 +20,54 @@ l = 0.0; % 0.01 * norm(Q, 1);
 % Option parsing
 p = inputParser;
 addParameter(p, 'tol', 1e-8);
+addParameter(p, 'alg', 'quad');
 
 parse(p, varargin{:});
 opts = p.Results;
+
+alg = opts.alg; 
 
 if strcmp(f, 'exp') || strcmp(f, 'phi')
     param.function = 'exp';
 end
 
-if strcmp(f, 'phi_pade')
-    error('This scheme is currently unsupported');
-    param.function = 'expz'; % @(t, z) 1 ./ (t - z) .* exp(t) ./ (2 * pi);
+if strcmp(alg, 'higham')
+	% f = @(x) expmv(1, Q', pi0', []);
+else
+	param.stopping_accuracy = opts.tol;
+	param.waitbar = false;
+	param.verbose = 2;
+	param.tol = opts.tol;
+	param.thick = [];
+	param.inner_product = @(x,y) x' * y;
+	param.V_full = false;
+	param.H_full = true;
+	param.restart_length = 10;
+	param.max_restarts = 10;
+	param.hermitian = false;
+	param.reorth_number = 0;
+	param.exact = [];
+	param.min_decay = 0.95;
+	param.truncation_length = inf;
+	param.bound = false;
+	param = param_init_quad(param);
 end
 
-param.stopping_accuracy = opts.tol;
-param.waitbar = false;
-param.verbose = false;
-param.tol = opts.tol;
-param.thick = [];
-param.inner_product = @(x,y) x' * y;
-param.V_full = false;
-param.H_full = true;
-param.restart_length = 10;
-param.max_restarts = 10;
-param.hermitian = false;
-param.reorth_number = 0;
-param.exact = [];
-param.min_decay = 0.95;
-param.truncation_length = inf;
-param.bound = false;
-
 if strcmp(f, 'exp') || strcmp(f, 'phi_pade')
-    A = t * Q' - l * speye(size(Q, 1));
+    A = t * Q';
     r = pi0';
 end
 
 if strcmp(f, 'phi')
-    A = [ t*Q' - l * speye(size(Q, 1)), pi0' ; zeros(1, size(Q,2) + 1) ];
+    A = [ t*Q', pi0' ; zeros(1, size(Q,2) + 1) ];
     r = [ zeros(size(Q,2),1) ; 1 ];
 end
 
-param = param_init_quad(param);
-ff = funm_quad(A, r, param);
+if strcmp(alg, 'higham')
+	ff = expmv(1.0, A, r, [], 'single');
+else
+	ff = funm_quad(A, r, param);
+end
 
 ff = ff(1 : size(Q, 2));
 
