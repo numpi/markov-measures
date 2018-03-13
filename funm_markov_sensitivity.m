@@ -1,4 +1,4 @@
-function d = funm_markov_sensitivity(pi0, Q, v, f, T, dQ)
+function d = funm_markov_sensitivity(pi0, Q, v, f, T, dQ, varargin)
 %FUNM_MARKOV_SENSITIVITY Compute the sensitivity of a measure. 
 %
 % D = FUNM_MARKOV_SENSITIVITY(PI0, Q, V, F, T, DQ) is the derivative of the
@@ -17,7 +17,7 @@ function d = funm_markov_sensitivity(pi0, Q, v, f, T, dQ)
 QQ = [ Q , dQ ; sparse(size(Q,1), size(Q,2)) , Q ]; 
 
 d = funm_markov([ pi0, zeros(1,size(Q,2)) ], QQ, ...
-        [ zeros(size(Q,2), 1) ; v ], f, T);
+        [ zeros(size(Q,2), 1) ; v ], f, T, varargin{:});
 
 end
 

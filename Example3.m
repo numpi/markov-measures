@@ -25,7 +25,7 @@ for i = 1 : N
     times(i) = toc;
     
     sizes(i) = n;
-    fprintf('> N = %d, time = %d (f = %e)\n', n, times(i), ee);
+    fprintf(' - N = %d, time = %d (f = %e)\n', n, times(i), ee);
 end
 
 dlmwrite('example3.dat', [ sizes', times' ], '\t');

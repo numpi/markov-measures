@@ -35,7 +35,7 @@ for i = 1 : length(exps)
     f = funm_markov(pi0, Q, v, 'exp', 1);
     tt = timeit(@() funm_markov(pi0, Q, v, 'exp', 1));
     
-    fprintf('N = %d, time = %e (f = %e)\n', n, tt, f);
+    fprintf(' - N = %d, time = %e (f = %e)\n', n, tt, f);
     times(i) = tt;
 end
 
