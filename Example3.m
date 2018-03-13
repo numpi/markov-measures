@@ -8,6 +8,8 @@ N = 10;
 times = zeros(1, N);
 sizes = zeros(1, N);
 
+T = 40;
+
 % Use the following to load Q
 for i = 1 : N
     Q = loadArm2(sprintf('data/example3/Experiment_%d.arm', i));
@@ -15,13 +17,16 @@ for i = 1 : N
 
     % Construct the initial probability and the reward vector
     pi0 = [ 1 , zeros(1, n-1) ];
-    r = double(full(sum(abs(Q')) == 0)');
-        
-    T = 40;
-
+	
+	% You might want to use this vector to mark all the absorbing states
+    % r = double(full(sum(abs(Q')) == 0)');
+	
+	r = zeros(n, 1);
+	r(dlmread(sprintf('data/example3/r_%d.dat', i))) = 1;
+	    
     tic; 
     ee = funm_markov(pi0, Q, r, 'phi', T, ...
-        'alg', 'quad', 'restarts', 30);
+        'alg', 'quad', 'restarts', 50);
     times(i) = toc;
     
     sizes(i) = n;
