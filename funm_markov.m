@@ -21,6 +21,7 @@ l = 0.0; % 0.01 * norm(Q, 1);
 p = inputParser;
 addParameter(p, 'tol', 1e-8);
 addParameter(p, 'alg', 'quad');
+addParameter(p, 'restarts', 15);
 
 parse(p, varargin{:});
 opts = p.Results;
@@ -36,13 +37,13 @@ if strcmp(alg, 'higham')
 else
 	param.stopping_accuracy = opts.tol;
 	param.waitbar = false;
-	param.verbose = 2;
+	param.verbose = false;
 	param.tol = opts.tol;
 	param.thick = [];
 	param.inner_product = @(x,y) x' * y;
 	param.V_full = false;
 	param.H_full = true;
-	param.restart_length = 10;
+	param.restart_length = opts.restarts;
 	param.max_restarts = 10;
 	param.hermitian = false;
 	param.reorth_number = 0;
