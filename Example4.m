@@ -40,7 +40,7 @@ fprintf(' - Derivative computed by finite differences: %e\n', de);
 fprintf(' - Derivative computed by our approach: %e\n', ds);
 
 % Test the scalability of this approach when n increases
-Ns = 2.^(8 : 18);
+Ns = 2.^(8 : 20);
 times = zeros(1, length(Ns));
 
 for i = 1 : length(Ns)
