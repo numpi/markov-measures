@@ -28,7 +28,7 @@ opts = p.Results;
 
 alg = opts.alg; 
 
-if strcmp(f, 'exp') || strcmp(f, 'phi')
+if strcmp(f, 'exp') || strcmp(f, 'phi') || strcmp(f, 'phi2')
     param.function = 'exp';
 end
 
@@ -64,6 +64,14 @@ if strcmp(f, 'phi')
     r = [ zeros(size(Q,2),1) ; 1 ];
 end
 
+if strcmp(f, 'phi2')
+    A = [ t*Q', pi0' zeros(size(Q, 2), 1)  ; ...
+        zeros(1, size(Q,2) + 1) , 1 ; ...
+        zeros(1, size(Q, 2) + 2) ];
+    
+    r = [ zeros(size(Q,2),1) ; 0 ; 1 ];
+end
+
 if strcmp(alg, 'higham')
 	ff = expmv(1.0, A, r, [], 'single');
 else
@@ -77,7 +85,7 @@ ff = ff(1 : size(Q, 2));
 % the rewards -- therefore we can enforce positivity of ff here. 
 ff = max(ff, 0);
 
-if strcmp(f, 'phi') || strcmp(f, 'phi_pade')
+if strcmp(f, 'phi') || strcmp(f, 'phi_pade') || strcmp(f, 'phi2')
     ff = t * ff;
 end
 
