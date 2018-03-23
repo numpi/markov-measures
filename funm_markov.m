@@ -44,7 +44,7 @@ else
 	param.V_full = false;
 	param.H_full = true;
 	param.restart_length = opts.restarts;
-	param.max_restarts = 10;
+	param.max_restarts = 25;
 	param.hermitian = false;
 	param.reorth_number = 0;
 	param.exact = [];
@@ -73,7 +73,7 @@ if strcmp(f, 'phi2')
 end
 
 if strcmp(alg, 'higham')
-	ff = expmv(1.0, A, r, [], 'single');
+	ff = expmv(1.0, A, r, [], 'double');
 else
 	ff = funm_quad(A, r, param);
 end
@@ -83,9 +83,13 @@ ff = ff(1 : size(Q, 2));
 % Ensure positivity: no matter what, the vector ff is the product of a
 % positive matrix (expm(tQ)) with a positive vector, the ones containing
 % the rewards -- therefore we can enforce positivity of ff here. 
-ff = max(ff, 0);
+% ff = max(ff, 0);
 
 if strcmp(f, 'phi') || strcmp(f, 'phi_pade') || strcmp(f, 'phi2')
+    ff = t * ff;
+end
+
+if strcmp(f, 'phi2')
     ff = t * ff;
 end
 
