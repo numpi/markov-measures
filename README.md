@@ -8,5 +8,5 @@ The toolbox <code>funm_quad</code>, required to run these examples, can be retri
 
 The software here is described in the following paper:
 
-> Computing performability measures in Markov chains by means of matrix functions. 
+> <em>Computing performability measures in Markov chains by means of matrix functions. </em><br>
 > G. Masetti and L. Robol, 2018, arXiv preprint arXiv:1803.06322.
