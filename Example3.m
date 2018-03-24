@@ -2,7 +2,7 @@ function Example3
 %EXAMPLE3 Compute ???
 %   Detailed explanation goes here
 
-% Maximum index of the experiment to load. 
+% Maximum index of the experiment to load.
 N = 10;
 
 times = zeros(1, N);
@@ -17,18 +17,18 @@ for i = 1 : N
 
     % Construct the initial probability and the reward vector
     pi0 = [ 1 , zeros(1, n-1) ];
-	
-	% You might want to use this vector to mark all the absorbing states
+
+    % You might want to use this vector to mark all the absorbing states
     % r = double(full(sum(abs(Q')) == 0)');
-	
-	r = zeros(n, 1);
-	r(dlmread(sprintf('data/example3/r_%d.dat', i))) = 1;
-	    
-    tic; 
+
+    r = zeros(n, 1);
+    r(dlmread(sprintf('data/example3/r_%d.dat', i))) = 1;
+
+    tic;
     ee = funm_markov(pi0, Q, r, 'phi', T, ...
         'alg', 'quad', 'restarts', 50);
     times(i) = toc;
-    
+
     sizes(i) = n;
     fprintf(' - N = %d, time = %d (f = %e)\n', n, times(i), ee);
 end
